@@ -4,3 +4,6 @@ export { default as Gudang } from './Gudang';
 export { default as Laporan } from './Laporan';
 export { default as Anggota } from './Anggota';
 export { default as Stok } from './Stok';
+export { default as PembelianCreate } from './PembelianCreate';
+export { default as Status } from './Status';
+export { default as Login } from './Login';

@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
-import { Anggota, Dashboard, Gudang, Laporan, Pembelian, Stok } from './pages';
+import { Anggota, Dashboard, Gudang, Laporan, Login, Pembelian, PembelianCreate, Status, Stok } from './pages';
 
 const router = createBrowserRouter([
   {
@@ -10,6 +10,14 @@ const router = createBrowserRouter([
   {
     path: '/pembelian',
     element: <Pembelian />,
+  },
+  {
+    path: '/pembelian/create',
+    element: <PembelianCreate />,
+  },
+  {
+    path: '/status',
+    element: <Status />,
   },
   {
     path: '/gudang',
@@ -26,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: '/stok',
     element: <Stok />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
 ]);
 
