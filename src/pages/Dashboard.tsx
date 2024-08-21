@@ -15,8 +15,7 @@ const Dashboard = () => {
   }, [dispatch]);
 
   // if (isLoading) return <p>Loading...</p>;
-  // if (isError) return <p>{message}</p>;
-
+  // if (isError) return <p>{
   return (
     <Layout>
       <div>{user ? `Welcome ${user.email}` : 'No user data'}</div>
