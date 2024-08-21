@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Navbar = () => {
   return (
     <div className="relative z-[100] bg-blue-800 h-[70px] w-full px-10  ">
