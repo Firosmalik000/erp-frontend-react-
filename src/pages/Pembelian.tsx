@@ -1,7 +1,53 @@
+import { useEffect, useState } from 'react';
 import CustomButton from '../components/CustomButton';
 import Layout from '../layouts/Layout';
+import axios from 'axios';
+import { AppDispatch, RootState } from '../features/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMe } from '../features/slice/AuthSlice';
+
+interface Item {
+  name: string;
+  price: number;
+  total: number;
+  note: string;
+  supplier: string;
+  riwayat: string;
+  qty: number; // Menambahkan properti qty karena digunakan di dalam table
+  status: string; // Menambahkan properti status karena digunakan di dalam table
+  user_id: {
+    username: string;
+  }; // Menambahkan properti user_id karena digunakan di dalam table
+}
 
 const Pembelian = () => {
+  // const { data, loading, error } = UseApi('/items', 'GET');
+  // console.log({ data });
+  const [datata, setDatata] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/items');
+        setDatata(response.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
+  console.log({ user });
+
+  console.log({ datata });
   return (
     <Layout>
       <div className="py-5">
@@ -19,41 +65,45 @@ const Pembelian = () => {
                         Name
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Jumlah
+                        Nama Pegawai
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Harga
+                        harga
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Jumlah
                       </th>
                       <th scope="col" className="px-6 py-3">
                         Total
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Supplier
+                        note
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Request By
+                        Status
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Riwayat
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Catatan
+                        Akun
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {pembelians.map((beli) => (
-                      <tr key={beli.id} className="bg-white border-b hover:bg-gray-100">
-                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{beli.nama}</td>
-                        <td className="px-6 py-4">{beli.jumlah}</td>
-                        <td className="px-6 py-4">{beli.harga}</td>
-                        <td className="px-6 py-4">{beli.total}</td>
-                        <td className="px-6 py-4">{beli.supplier}</td>
-                        <td className="px-6 py-4">{beli?.user?.name}</td>
-                        <td className="px-6 py-4">{beli.riwayat}</td>
-                        <td className="px-6 py-4">{beli.catatan}</td>
-                      </tr>
-                    ))} */}
+                    {!loading && datata ? (
+                      datata.map((beli: Item, index) => (
+                        <tr key={index + 1} className="bg-white border-b hover:bg-gray-100">
+                          <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{beli.name}</td>
+                          <td className="px-6 py-4">-</td>
+                          <td className="px-6 py-4">{beli.price}</td>
+                          <td className="px-6 py-4">{beli.qty}</td>
+                          <td className="px-6 py-4">{beli.total}</td>
+                          <td className="px-6 py-4">{beli.note}</td>
+                          <td className="px-6 py-4">{beli?.status}</td>
+                          <td className="px-6 py-4">{beli.user_id?.username}</td>
+                        </tr>
+                      ))
+                    ) : (
+                      <>Loading</>
+                    )}
                   </tbody>
                 </table>
               </div>

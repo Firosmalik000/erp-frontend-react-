@@ -50,7 +50,7 @@ export const loginUser = createAsyncThunk<User, LoginUserPayload, { rejectValue:
 // getMe
 export const getMe = createAsyncThunk<User, void, { rejectValue: string }>('user/getMe', async (_, thunkAPI) => {
   try {
-    const response = await axios.get('http://localhost:5000/api/auth/login', { withCredentials: true });
+    const response = await axios.get('http://localhost:5000/api/auth/me', { withCredentials: true });
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -63,7 +63,7 @@ export const getMe = createAsyncThunk<User, void, { rejectValue: string }>('user
 
 // Define the logOut thunk
 export const logOut = createAsyncThunk<void, void>('user/logOut', async () => {
-  await axios.delete('https://deploy-test-node-plum.vercel.app/api/auth/logout');
+  await axios.delete('http://localhost:5000/api/auth/logout');
 });
 
 const authSlice = createSlice({
