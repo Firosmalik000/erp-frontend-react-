@@ -2,35 +2,29 @@ import React from 'react';
 import CustomDetailField from '../CustomDetailField';
 import { ImCross } from 'react-icons/im';
 
-// Definisikan tipe untuk item
 interface Item {
-  nama?: string;
-  harga?: string;
+  _id?: string;
+  name?: string;
+  price?: string;
   total?: string;
   supplier?: string;
-  riwayat?: string;
-  catatan?: string;
+  category?: string;
+  note?: string;
+  orderType?: string;
+  user_id?: {
+    username: string;
+    email: string;
+    _id: string;
+  };
 }
-
-// interface User {
-//   name?: string;
-// }
 
 interface DetailStatusProps {
   items?: Item;
-  //   user?: User;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
 }
 
-const DetailStatus: React.FC<DetailStatusProps> = ({
-  items,
-  // user,
-  setOpen,
-  open,
-}) => {
-  //   console.log('DetailStatus received items:', user);
-
+const DetailStatus: React.FC<DetailStatusProps> = ({ items, setOpen, open }) => {
   return (
     <div className={`fixed overflow-x-auto shadow-md sm:rounded-lg mt-4 min-h-[100vh] w-[400px] top-0 right-0 bg-white p-10 px-6 transform ${open ? 'translate-x-0 ' : 'translate-x-full'} transition-transform duration-300 ease-in-out`}>
       <div className="flex justify-between items-center">
@@ -41,13 +35,14 @@ const DetailStatus: React.FC<DetailStatusProps> = ({
       </div>
       <hr />
       <div className="mt-8" />
-      <CustomDetailField label="Product" value={items?.nama} />
-      <CustomDetailField label="Harga" value={items?.harga} />
+      <CustomDetailField label="Nama Pegawai" value={items?.name} />
+      <CustomDetailField label="Order" value={items?.orderType} />
+      <CustomDetailField label="Harga" value={items?.price} />
       <CustomDetailField label="Total" value={items?.total} />
+      <CustomDetailField label="Category" value={items?.category} />
       <CustomDetailField label="Supplier" value={items?.supplier} />
-      {/* <CustomDetailField label="Request By" value={user?.name} /> */}
-      <CustomDetailField label="Riwayat" value={items?.riwayat} />
-      <CustomDetailField label="Catatan" value={items?.catatan} />
+      <CustomDetailField label="Akun" value={items?.user_id?.username} />
+      <CustomDetailField label="Catatan" value={items?.note} />
     </div>
   );
 };

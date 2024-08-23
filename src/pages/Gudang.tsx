@@ -1,6 +1,53 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from 'react';
 import Layout from '../layouts/Layout';
+import axios from 'axios';
+import CustomButton from '../components/CustomButton';
+
+// Definisikan tipe Gudang
+interface GudangData {
+  _id: string;
+  user_id: { username: string };
+  status_id: {
+    _id: string;
+    status: string;
+    acceptedBy?: {
+      username: string;
+    };
+  };
+}
 
 const Gudang = () => {
+  const [data, setData] = useState<GudangData[]>([]); // Definisikan tipe data sebagai array GudangData
+  const [errors, setErrors] = useState<string | null>(null); // Definisikan tipe error sebagai string atau null
+  const [loading, setLoading] = useState<boolean>(false); // Definisikan tipe loading sebagai boolean
+
+  useEffect(() => {
+    setErrors(null); // Gunakan null sebagai nilai awal untuk error
+    setLoading(true);
+    const fetchGudang = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/warehouse');
+        setData(response.data);
+      } catch (err: any) {
+        setErrors(err.message || 'Terjadi kesalahan saat mengambil data.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchGudang();
+  }, []);
+
+  console.log({ errors });
+
+  // if (loading) {
+  //   return <p>Loading...</p>; // Tambahkan kondisi rendering untuk loading
+  // }
+
+  // if (errors) {
+  //   return <p>Error: {errors}</p>; // Tambahkan kondisi rendering untuk error
+  // }
+  console.log({ data });
   return (
     <Layout>
       <div className="py-12">
@@ -15,7 +62,7 @@ const Gudang = () => {
                         No
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Pembelian
+                        Item
                       </th>
                       <th scope="col" className="px-6 py-3">
                         Status
@@ -29,63 +76,28 @@ const Gudang = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {gudang?.map((gdg, index) => (
-                                            <tr
-                                                key={gdg.id}
-                                                className={`hover:bg-gray-100 ${
-                                                    gdg.status.status ===
-                                                    "Accepted"
-                                                        ? "bg-green-200"
-                                                        : gdg.status.status ===
-                                                          "Rejected"
-                                                        ? "bg-red-200"
-                                                        : gdg.status.status ===
-                                                          "Pending"
-                                                        ? "bg-yellow-200"
-                                                        : "bg-gray-100"
-                                                }`}
-                                            >
-                                                <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                    {index + 1}
-                                                </th>
-                                                <td className="px-6 py-4">
-                                                    {gdg.status_id}
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    {gdg.status.status}
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    {gdg.status?.user?.name}
-                                                </td>
+                    {loading ? (
+                      <>Loading...</>
+                    ) : (
+                      data?.map((gdg, index) => (
+                        <tr
+                          key={gdg._id}
+                          className={`hover:bg-gray-100 ${gdg.status_id.status === 'approved' ? 'bg-green-200' : gdg.status_id.status === 'rejected' ? 'bg-red-200' : gdg.status_id.status === 'Pending' ? 'bg-yellow-200' : 'bg-gray-100'}`}
+                        >
+                          <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{index + 1}</th>
+                          <td className="px-6 py-4">{gdg.status_id._id}</td>
+                          <td className="px-6 py-4">{gdg.status_id.status}</td>
+                          <td className="px-6 py-4">{gdg?.user_id?.username || '-'}</td>
 
-                                                <td className="px-6 py-4">
-                                                    {console.log(
-                                                        `gdg.gudang for gdg id ${gdg.id}:`,
-                                                        gdg.gudang
-                                                    )}
-                                                    {gdg && gdg.code ? (
-                                                        <>-</>
-                                                    ) : (
-                                                        <CustomButton
-                                                            title="Lapor Kedatangan"
-                                                            // onClick={() =>
-                                                            //     handleRowClick(
-                                                            //         gdg.id
-                                                            //     )
-                                                            // }
-                                                        />
-                                                    )}
-                                                </td>
-                                            </tr>
-                                        ))} */}
+                          <td className="px-6 py-4">
+                            <CustomButton title="Lapor Kedatangan" />
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
-              {/* <LaporanGudang
-                                open={open}
-                                setOpen={setOpen}
-                                gudang={selectedGudang}
-                            /> */}
             </div>
           </div>
         </div>

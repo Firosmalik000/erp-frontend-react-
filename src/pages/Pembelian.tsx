@@ -11,18 +11,16 @@ interface Item {
   price: number;
   total: number;
   note: string;
+  category: string;
+  orderType: string;
+  qty: number;
   supplier: string;
-  riwayat: string;
-  qty: number; // Menambahkan properti qty karena digunakan di dalam table
-  status: string; // Menambahkan properti status karena digunakan di dalam table
   user_id: {
     username: string;
-  }; // Menambahkan properti user_id karena digunakan di dalam table
+  };
 }
 
 const Pembelian = () => {
-  // const { data, loading, error } = UseApi('/items', 'GET');
-  // console.log({ data });
   const [datata, setDatata] = useState([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -62,10 +60,13 @@ const Pembelian = () => {
                   <thead className="text-xs text-white uppercase bg-indigo-600">
                     <tr>
                       <th scope="col" className="px-6 py-3">
-                        Name
+                        Name Pegawai
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Nama Pegawai
+                        Order
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Category
                       </th>
                       <th scope="col" className="px-6 py-3">
                         harga
@@ -80,7 +81,7 @@ const Pembelian = () => {
                         note
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Status
+                        Supplier
                       </th>
                       <th scope="col" className="px-6 py-3">
                         Akun
@@ -92,12 +93,13 @@ const Pembelian = () => {
                       datata.map((beli: Item, index) => (
                         <tr key={index + 1} className="bg-white border-b hover:bg-gray-100">
                           <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{beli.name}</td>
-                          <td className="px-6 py-4">-</td>
+                          <td className="px-6 py-4">{beli.orderType}</td>
+                          <td className="px-6 py-4">{beli.category}</td>
                           <td className="px-6 py-4">{beli.price}</td>
                           <td className="px-6 py-4">{beli.qty}</td>
                           <td className="px-6 py-4">{beli.total}</td>
                           <td className="px-6 py-4">{beli.note}</td>
-                          <td className="px-6 py-4">{beli?.status}</td>
+                          <td className="px-6 py-4">{beli.supplier}</td>
                           <td className="px-6 py-4">{beli.user_id?.username}</td>
                         </tr>
                       ))

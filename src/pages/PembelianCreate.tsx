@@ -9,31 +9,33 @@ import { AppDispatch, RootState } from '../features/store';
 
 const PembelianCreate = () => {
   const { user } = useSelector((state: RootState) => state.auth);
-  const [datata, setDatata] = useState({
+  const [data, setData] = useState({
     name: '',
+    category: '',
+    orderType: '',
     qty: '',
     price: '',
     total: '',
     note: '',
+    supplier: '',
     user_id: user?._id,
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
 
   useEffect(() => {
     if (user) {
-      setDatata((prevState: any) => ({ ...prevState, user_id: user?._id }));
+      setData((prevState: any) => ({ ...prevState, user_id: user?._id }));
     }
   }, [user]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDatata({ ...datata, [e.target.name]: e.target.value });
+    setData({ ...data, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,10 +43,10 @@ const PembelianCreate = () => {
     setLoading(true);
     setErrors({});
     try {
-      const response = await axios.post('http://localhost:5000/api/items/create', datata, {
-        withCredentials: true, // Pastikan cookie sesi dikirim bersama permintaan
+      const response = await axios.post('http://localhost:5000/api/items/create', data, {
+        withCredentials: true,
       });
-      setDatata(response.data);
+      setData(response.data);
       navigate('/status');
     } catch (error: any) {
       if (error.response && error.response.data) {
@@ -58,6 +60,7 @@ const PembelianCreate = () => {
   };
 
   const classnameInput = 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50';
+  const classLabel = 'block text-sm font-medium text-gray-700';
 
   return (
     <Layout>
@@ -67,29 +70,44 @@ const PembelianCreate = () => {
             <div className="p-6 text-gray-900">
               <form className="grid grid-cols-2 gap-4" encType="multipart/form-data" onSubmit={handleSubmit}>
                 <div className="col-span-1">
-                  <label className="block text-sm font-medium text-gray-700">Name</label>
-                  <input type="text" name="name" value={datata.name} onChange={handleInput} className={classnameInput} />
+                  <label className={classLabel}>Name</label>
+                  <input type="text" name="name" value={data?.name} onChange={handleInput} className={classnameInput} />
                   {errors.name && <span className="text-red-500 text-sm">{errors.name}</span>}
                 </div>
                 <div className="col-span-1">
-                  <label className="block text-sm font-medium text-gray-700">Jumlah</label>
-                  <input type="number" name="qty" value={datata.qty} onChange={handleInput} className={classnameInput} />
+                  <label className={classLabel}>Order</label>
+                  <input type="text" name="orderType" value={data.orderType} onChange={handleInput} className={classnameInput} />
+                  {errors.orderType && <span className="text-red-500 text-sm">{errors.orderType}</span>}
+                </div>
+                <div className="col-span-1">
+                  <label className={classLabel}>Category</label>
+                  <input type="text" name="category" value={data.category} onChange={handleInput} className={classnameInput} />
+                  {errors.category && <span className="text-red-500 text-sm">{errors.category}</span>}
+                </div>
+                <div className="col-span-1">
+                  <label className={classLabel}>Jumlah</label>
+                  <input type="number" name="qty" value={data.qty} onChange={handleInput} className={classnameInput} />
                   {errors.qty && <span className="text-red-500 text-sm">{errors.qty}</span>}
                 </div>
                 <div className="col-span-1">
-                  <label className="block text-sm font-medium text-gray-700">Price</label>
-                  <input type="number" name="price" value={datata.price} onChange={handleInput} className={classnameInput} />
+                  <label className={classLabel}>Price</label>
+                  <input type="number" name="price" value={data.price} onChange={handleInput} className={classnameInput} />
                   {errors.price && <span className="text-red-500 text-sm">{errors.price}</span>}
                 </div>
                 <div className="col-span-1">
-                  <label className="block text-sm font-medium text-gray-700">Total</label>
-                  <input type="number" name="total" value={datata.total} onChange={handleInput} className={classnameInput} />
+                  <label className={classLabel}>Total</label>
+                  <input type="number" name="total" value={data.total} onChange={handleInput} className={classnameInput} />
                   {errors.total && <span className="text-red-500 text-sm">{errors.total}</span>}
                 </div>
                 <div className="col-span-1">
-                  <label className="block text-sm font-medium text-gray-700">Note</label>
-                  <input type="text" name="note" value={datata.note} onChange={handleInput} className={classnameInput} />
+                  <label className={classLabel}>Note</label>
+                  <input type="text" name="note" value={data.note} onChange={handleInput} className={classnameInput} />
                   {errors.note && <span className="text-red-500 text-sm">{errors.note}</span>}
+                </div>
+                <div className="col-span-1">
+                  <label className={classLabel}>supplier</label>
+                  <input type="text" name="supplier" value={data.supplier} onChange={handleInput} className={classnameInput} />
+                  {errors.supplier && <span className="text-red-500 text-sm">{errors.supplier}</span>}
                 </div>
                 <div className="flex gap-x-2 col-span-2">
                   <button

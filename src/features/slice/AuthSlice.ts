@@ -2,15 +2,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Define types for the state and payload
 interface User {
-  // Define user properties here
   email: string;
-  // other user properties
 }
 
 interface AuthState {
-  user: User | null;
+  user: User | null | any;
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
@@ -26,7 +23,6 @@ const initialState: AuthState = {
   message: '',
 };
 
-// Define the shape of the payload for loginUser thunk
 interface LoginUserPayload {
   email: string;
   password: string;
@@ -46,8 +42,6 @@ export const loginUser = createAsyncThunk<User, LoginUserPayload, { rejectValue:
   }
 });
 
-// Define the getMe thunk
-// getMe
 export const getMe = createAsyncThunk<User, void, { rejectValue: string }>('user/getMe', async (_, thunkAPI) => {
   try {
     const response = await axios.get('http://localhost:5000/api/auth/me', { withCredentials: true });

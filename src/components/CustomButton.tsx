@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 // Definisikan tipe untuk props CustomButton
 interface CustomButtonProps {
-  title: string;
+  title: string | any;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   href?: string;
   color?: string;
