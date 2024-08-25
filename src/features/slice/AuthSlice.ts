@@ -31,7 +31,7 @@ interface LoginUserPayload {
 // Define the loginUser thunk
 export const loginUser = createAsyncThunk<User, LoginUserPayload, { rejectValue: string }>('user/loginUser', async (user, thunkAPI) => {
   try {
-    const response = await axios.post('http://localhost:5000/api/auth/login', user, { withCredentials: true });
+    const response = await axios.post('https://deploy-test-node-plum.vercel.app/api/auth/login', user, { withCredentials: true });
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -44,7 +44,7 @@ export const loginUser = createAsyncThunk<User, LoginUserPayload, { rejectValue:
 
 export const getMe = createAsyncThunk<User, void, { rejectValue: string }>('user/getMe', async (_, thunkAPI) => {
   try {
-    const response = await axios.get('http://localhost:5000/api/auth/me', { withCredentials: true });
+    const response = await axios.get('https://deploy-test-node-plum.vercel.app/api/auth/me', { withCredentials: true });
     return response.data;
   } catch (error: any) {
     if (error.response) {

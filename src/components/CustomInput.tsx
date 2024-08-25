@@ -7,9 +7,10 @@ interface CustomInputProps {
   id?: string;
   name?: string;
   className?: string;
+  error?: string;
 }
 
-const CustomInput = ({ title, onChange, value, type = 'text', placeholder = '', id = 'custom-input', name = '', className = '', ...props }: CustomInputProps) => {
+const CustomInput = ({ title, onChange, value, type = 'text', placeholder = '', id = 'custom-input', name = '', className = '', error, ...props }: CustomInputProps) => {
   return (
     <div className="mb-4">
       {title && (
@@ -27,6 +28,8 @@ const CustomInput = ({ title, onChange, value, type = 'text', placeholder = '', 
         value={value}
         {...props}
       />
+
+      <p className="text-red-500 text-xs italic">{error}</p>
     </div>
   );
 };

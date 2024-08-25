@@ -34,7 +34,7 @@ const PembelianCreate = () => {
     }
   }, [user]);
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
@@ -81,9 +81,16 @@ const PembelianCreate = () => {
                 </div>
                 <div className="col-span-1">
                   <label className={classLabel}>Category</label>
-                  <input type="text" name="category" value={data.category} onChange={handleInput} className={classnameInput} />
+                  <select name="category" value={data.category} onChange={handleInput} className={classnameInput}>
+                    <option value="">Pilih kategori</option>
+                    <option value="konstruksi">Konstruksi</option>
+                    <option value="pemeliharaan">Pemeliharaan</option>
+                    <option value="pajak">Pajak</option>
+                    <option value="administratif">Administratif</option>
+                  </select>
                   {errors.category && <span className="text-red-500 text-sm">{errors.category}</span>}
                 </div>
+
                 <div className="col-span-1">
                   <label className={classLabel}>Jumlah</label>
                   <input type="number" name="qty" value={data.qty} onChange={handleInput} className={classnameInput} />
